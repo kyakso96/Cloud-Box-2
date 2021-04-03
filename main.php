@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="Website.css">
 	<title>Cloud Computing Application</title>
 </head>
 <body>
