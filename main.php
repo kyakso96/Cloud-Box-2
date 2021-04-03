@@ -15,13 +15,13 @@
 					<a href="#">Home</a>
 				</li>
 				<li>
-					<a href="#">Sign In</a>
+					<a href="login.php">Sign In</a>
 				</li>
 				<li>
 					<a href="#">Sign Up</a>
 				</li>
 				<li>
-					<a href="#">Services</a>
+					<a href="upload.php">Services</a>
 				</li>
 				<li>
 					<a href="#">About</a>
