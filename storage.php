@@ -1,12 +1,20 @@
 <?php
-
+require __DIR__ . '/vendor/autoload.php';
 use Google\Cloud\Storage\StorageClient;
 
-class storage
+class storage {
+    private $projectId;
+    private $storage;
+        public function __construct() {  // main function to connect to our Cloud Project
+            putenv("GOOGLE_APPLICATION_CREDENTIALS=C:\\xampp\\htdocs\\web_cloud_storage\\Cloud-Box\\credentials\\useful-song-309021-be6c5ddcef2e.json");  // credential to connect to GCP service
+            $this->projectId = 'useful-song-309021';  // name of our project id
+            $this->storage = new StorageClient([
+                'projectId' => $this->projectId
+            ]);
+        }
 
-{
-
-    function upload_object($bucketName, $objectName, $source)  //uploading objects
+     
+    function uploadPObject($bucketName, $objectName, $source)  //uploading objects
     {
         $storage = new StorageClient();
         $file = fopen($source, 'r');
@@ -26,4 +34,5 @@ class storage
         printf('Downloaded gs://%s/%s to %s' . PHP_EOL,
             $bucketName, $objectName, basename($destination));
     }
+
 }

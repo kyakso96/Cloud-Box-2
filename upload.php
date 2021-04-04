@@ -1,35 +1,21 @@
 <!DOCTYPE html>
 <html>
 <body>
-<?php
-    $env: GOOGLE_APPLICATION_CREDENTIALS= "C:\xampp\htdocs\Cloud-Box\credentials\useful-song-309021-9cc4a78dbab2.json";
-    # Includes the autoloader for libraries installed with composer
-    require __DIR__ . '/vendor/autoload.php';
 
-    # Imports the Google Cloud client library
-    use Google\Cloud\Storage\StorageClient;
 
-    # Your Google Cloud Platform project ID
-    $projectId = 'useful-song-309021';
+    <form action="upload.php" method="post" enctype="multipart/form-data"> <!-- form to upload files into the biucket -->
+        <input type="file" name="file">
+        <button type="submit"  name="upload">Upload </button>
+    </form>
 
-    # Instantiates a client
-    $storage = new StorageClient([
-        'projectId' => $projectId
-    ]);
+    <?php
+        include "storage.php";  // call upload object from storage.php to push file into the cloud storage
+        $storage = new storage();
+  // print_r($_FILES); exit; // only to check if it is connecting
+        if (isset($_POST['upload'])) { //call upload from the submit form to push the object
+            $storage->uploadPObject('cloud-box-bucket', $_FILES['file']['name'], $_FILES['file']['tmp_name']);
+        }
+    ?>
 
-?>
-<form action="upload.php" method="post" enctype="multipart/form-data">
-  Select image to upload:
-  <input type="file" name="fileToUpload" id="fileToUpload">
-  <input type="submit" value="Upload Image" name="submit">
-</form>
-<?php
-    include "storage.php";
-    $storage = new storage();
-print_r($_FILES); exit;
-    if (isset($_POST['submit'])) {
-        $storage->upload_object('cloud-box-bucket', $_FILES['file']['name'], $_FILES['file']['tmp_name']);
-    }
-?>
 </body>
 </html>
