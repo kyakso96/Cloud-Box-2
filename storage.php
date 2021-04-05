@@ -20,7 +20,7 @@ class storage {
         $file = fopen($source, 'r');
         $bucket = $storage->bucket($bucketName);
         $object = $bucket->upload($file, [
-            'name' => $objectName
+            'name' => $objectName   
         ]);
      printf('Uploaded %s to gs://%s/%s' . PHP_EOL, basename($source), $bucketName, $objectName);
     }
