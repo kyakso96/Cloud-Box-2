@@ -1,77 +1,150 @@
-<<<<<<< Updated upstream
-=======
-<?php
-   include("DBConnect.php");
-   session_start();
-   
-   if($_SERVER["REQUEST_METHOD"] == "POST") {
-      // username and password sent from form 
-      
-      $email = mysqli_real_escape_string($db,$_POST['email']);
-      $pass = mysqli_real_escape_string($db,$_POST['pass']); 
-      
-      $sql = "SELECT * FROM Register WHERE email = '$email' and pass = '$pass'";
-      $result = mysqli_query($db,$sql);
-      $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-      $active = $row['active'];
-      
-      $count = mysqli_num_rows($result);
-      
-      // If result matched $myusername and $mypassword, table row must be 1 row
-		
-      if($count == 1) {
-         session_register("email");
-         $_SESSION['login_user'] = $email;
-         
-         header("location: welcome.php");
-      }else {
-         $error = "Your Login Name or Password is invalid";
-      }
-   }
-?>
->>>>>>> Stashed changes
 <html>
 <head>
-      <title> User login and Registration </title>
-      <link rel="stylesheet" type="text/css"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <title> Login </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-
+<br />
 <div class="container">
-      <div class="login-box">
-      <div class="row">
-      <div class="col-md-6">
-            <h2> Login here </h2)
-            <form action="validation.php" method="post">
-                  <div class="form-gorup">
-                        <label>username</label>
-                        <input type="text" name="user" class="form-control" required>
-                        </div>
-                  <div class="form-group">
-                        <label> password</label>
-                        <input type="password" name="password" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary"> Login </button>
-                  </form>
-            </div>
-            <div class="col-md-6">
-            <h2> Register here </h2)
-            <form action="registration.php" method="post">
-                  <div class="form-gorup">
-                        <label>username</label>
-                        <input type="text" name="user" class="form-control" required>
-                        </div>
-                  <div class="form-group">
-                        <label> password</label>
-                        <input type="password" name="password" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary"> Register </button>
-                  </form>
-            </div>
+    <h3 align="center">Login</h3>
+    <br />
 
+    <?php
+    if(isset($_GET["register"]))
+    {
+        if($_GET["register"] == 'success')
+        {
+            echo '
+                <h1 class="text-success"> Email has been verified. Registration has been completed.. </h1> 
+            ';
+        }
+    }
+
+    $servername = "localhost";
+    $username = "root";
+    $password = "pass213";
+
+    try {
+        $connect = new PDO("mysql:host=$servername;port=3307;dbname=userdetail", $username, $password);
+        // set the PDO error mode to exception
+        $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    } catch(PDOException $e) {
+        echo "Connection failed: " . $e->getMessage();
+    }
+
+    // Define variables and initialize with empty values
+    $user_email = $user_password = "";
+    $user_email_error = $user_password_error = $login_error = "";
+
+    // Processing form data when form is submitted
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+        // Check if username is empty
+        if(empty(trim($_POST["email"]))){
+            $user_email_error = "Please enter your Email.";
+        } else{
+            $user_email = trim($_POST["email"]);
+        }
+
+        // Check if password is empty
+        if(empty(trim($_POST["password"]))){
+            $user_password_error = "Please enter your password.";
+        } else{
+            $user_password = trim($_POST["password"]);
+        }
+
+        // Validate credentials
+        if(empty($user_email_error) && empty($user_password_error)){
+            // Prepare a select statement
+            $sql = "SELECT user_email, user_password FROM register_user WHERE user_email = :user_email";
+
+            if($statement = $connect->prepare($sql)){
+                // Bind variables to the prepared statement as parameters
+                $statement->bindParam(":user_email", $param_email, PDO::PARAM_STR);
+
+                // Set parameters
+                $param_email = trim($_POST["email"]);
+
+                // Attempt to execute the prepared statement
+                if($statement->execute()){
+                    // Check if username exists, if yes then verify password
+                    if($statement->rowCount() == 1){
+                        if($row = $statement->fetch()){
+                            $user_email = $row["user_email"];
+                            $hashed_password = $row["user_password"];
+                            if(password_verify($user_password, $hashed_password)){
+                                // Password is correct, so start a new session
+                                session_start();
+
+                                // Store data in session variables
+                                $_SESSION["loggedin"] = true;
+                                $_SESSION["username"] = $user_email;
+
+                                // Redirect user to welcome page
+                                header("location: index.php");
+                            } else{
+                                // Password is not valid, display a generic error message
+                                $login_error = "Invalid username or password.";
+                            }
+                        }
+                    } else{
+                        // Username doesn't exist, display a generic error message
+                        $login_error = "Invalid username or password.";
+                    }
+                } else{
+                    echo "Oops! Something went wrong. Please try again later.";
+                }
+
+                // Close statement
+                unset($statement);
+            }
+        }
+
+        // Close connection
+        unset($pdo);
+    }
+    ?>
+
+    <div class="row">
+        <div class="col-md-3">&nbsp;</div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Login</h3>
+                </div>
+                <div class="panel-body">
+                    <?php
+                    if(!empty($login_error)){
+                        echo '<div class="alert alert-danger">' . $login_error . '</div>';
+                    }
+                    ?>
+                    <form method="POST" id="login_form">
+                        <div class="form-group" id="email_area">
+                            <label>Enter Email</label>
+                            <input type="text" name="email" class="form-control <?php echo (!empty($user_email_error)) ? 'is-invalid' : ''; ?>" value="<?php echo $user_email; ?>">
+                            <span class="invalid-feedback"><?php echo $user_email_error; ?></span>
+                        </div>
+                        <div class="form-group" id="password_area">
+                            <label>Enter password</label>
+                            <input type="password" name="password" class="form-control <?php echo (!empty($user_password_error)) ? 'is-invalid' : ''; ?>">
+                            <span class="invalid-feedback"><?php echo $user_password_error; ?></span>
+                        </div>
+                        <div class="form-group" align="right">
+                            <input type="hidden" name="action" id="action" value="email" />
+                            <input type="submit" name="login" id="login" class="btn btn-primary" value="Login" />
+                        </div>
+                        <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+                    </form>
+                </div>
             </div>
-            
-   </body>
-   </html>
+        </div>
+    </div>
+
+</div>
+<br />
+<br />
+</body>
+</html>
+
