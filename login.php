@@ -22,7 +22,7 @@
         }
     }
 
-    $servername = "localhost";
+    /*$servername = "localhost";
     $username = "root";
     $password = "pass213";
 
@@ -32,7 +32,12 @@
         $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
-    }
+    }*/
+    $dsn = getenv('CLOUDSQL_DSN');
+    $user = getenv('CLOUDSQL_USER');
+    $password = getenv('CLOUDSQL_PASSWORD');
+
+    $connect = new PDO($dsn, $user, $password);
 
     // Define variables and initialize with empty values
     $user_email = $user_password = "";

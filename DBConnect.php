@@ -21,15 +21,8 @@ try {
         echo "Connection failed: " . $e->getMessage();
 }
 */
-$username = 'root';
-$password = 'pass213';
-$dbName = 'userdetail';
-$dbHost = "127.0.0.1";
+$dsn = getenv('CLOUDSQL_DSN');
+$user = getenv('CLOUDSQL_USER');
+$password = getenv('CLOUDSQL_PASSWORD');
 
-// Connect using TCP
-$dsn = sprintf('mysql:dbname=%s;host=%s', $dbName, $dbHost);
-
-// Connect to the database
-$connect = new PDO($dsn, $username, $password, $connConfig);
-?>
-
+$connect = new PDO($dsn, $user, $password);

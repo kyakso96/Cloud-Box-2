@@ -14,7 +14,7 @@ try {
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
 }*/
-$username = 'root';
+/*$username = 'root';
 $password = 'pass213';
 $dbName = 'userdetail';
 $dbHost = "localhost";
@@ -23,7 +23,12 @@ $dbHost = "localhost";
 $dsn = sprintf('mysql:dbname=%s;host=%s', $dbName, $dbHost);
 
 // Connect to the database
-$connect = new PDO($dsn, $username, $password, $connConfig);
+$connect = new PDO($dsn, $username, $password, $connConfig); */
+$dsn = getenv('CLOUDSQL_DSN');
+$user = getenv('CLOUDSQL_USER');
+$password = getenv('CLOUDSQL_PASSWORD');
+
+$connect = new PDO($dsn, $user, $password);
 
 // defined variables
 $message = '';
