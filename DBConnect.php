@@ -6,6 +6,8 @@
  $db = getenv('UserDetail');
  $conn = mysqli_connect($inst, $user, $pass, $db); */
 
+
+/*
 $servername = "localhost";
 $username = "root";
 $password = "pass213";
@@ -18,6 +20,16 @@ try {
 } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
 }
+*/
+$username = 'root';
+$password = 'pass213';
+$dbName = 'userdetail';
+$dbHost = "127.0.0.1";
 
+// Connect using TCP
+$dsn = sprintf('mysql:dbname=%s;host=%s', $dbName, $dbHost);
+
+// Connect to the database
+$connect = new PDO($dsn, $username, $password, $connConfig);
 ?>
 

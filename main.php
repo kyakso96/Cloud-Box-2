@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="Website.css">
+<link rel="stylesheet" href="css/Website.css">
 	<title>Cloud Computing Application</title>
 </head>
 <body>
@@ -18,7 +18,7 @@
 					<a href="login.php">Sign In</a>
 				</li>
 				<li>
-					<a href="#">Sign Up</a>
+					<a href="register.php">Sign Up</a>
 				</li>
 				<li>
 					<a href="upload.php">Services</a>
@@ -45,7 +45,7 @@
 
 	</div>
 	<footer>
-		<p>All Right Reserved By Your Website</p>
+		<p>All Right Reserved By Cloud-Box</p>
 	</footer>
 </body>
 </html>

@@ -2,7 +2,7 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-$servername = "localhost";
+/*$servername = "localhost";
 $username = "root";
 $password = "pass213";
 
@@ -13,7 +13,17 @@ try {
 
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
-}
+}*/
+$username = 'root';
+$password = 'pass213';
+$dbName = 'userdetail';
+$dbHost = "localhost";
+
+// Connect using TCP
+$dsn = sprintf('mysql:dbname=%s;host=%s', $dbName, $dbHost);
+
+// Connect to the database
+$connect = new PDO($dsn, $username, $password, $connConfig);
 
 // defined variables
 $message = '';
