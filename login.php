@@ -33,11 +33,11 @@
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }*/
-    $dsn = getenv('CLOUDSQL_DSN');
     $user = getenv('CLOUDSQL_USER');
     $password = getenv('CLOUDSQL_PASSWORD');
-
-    $connect = new PDO($dsn, $user, $password);
+    $dsn = getenv('CLOUDSQL_DSN');
+    #$db = getenv('CLOUDSQL_DB');
+    $connect = new PDO(null, $user, $password, null, $dsn);
 
     // Define variables and initialize with empty values
     $user_email = $user_password = "";
@@ -63,7 +63,7 @@
         // Validate credentials
         if(empty($user_email_error) && empty($user_password_error)){
             // Prepare a select statement
-            $sql = "SELECT user_email, user_password FROM register_user WHERE user_email = :user_email";
+            $sql = "SELECT user_email, user_password FROM register_user_1 WHERE user_email = :user_email";
 
             if($statement = $connect->prepare($sql)){
                 // Bind variables to the prepared statement as parameters

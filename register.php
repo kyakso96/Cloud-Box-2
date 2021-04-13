@@ -1,13 +1,11 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
 
-/*$servername = "localhost";
-$username = "root";
-$password = "pass213";
+/*$dsn = getenv('CLOUDSQL_DSN');
+$user = getenv('CLOUDSQL_USER');
+$password = getenv('CLOUDSQL_PASSWORD');
 
 try {
-    $connect = new PDO("mysql:host=$servername;port=3307;dbname=userdetail", $username, $password);
+    $connect = new PDO($dsn, $user, $passwprd);
     // set the PDO error mode to exception
     $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -24,11 +22,12 @@ $dsn = sprintf('mysql:dbname=%s;host=%s', $dbName, $dbHost);
 
 // Connect to the database
 $connect = new PDO($dsn, $username, $password, $connConfig); */
-$dsn = getenv('CLOUDSQL_DSN');
+
 $user = getenv('CLOUDSQL_USER');
 $password = getenv('CLOUDSQL_PASSWORD');
-
-$connect = new PDO($dsn, $user, $password);
+$dsn = getenv('CLOUDSQL_DSN');
+#$db = getenv('CLOUDSQL_DB');
+$connect = new PDO(null, $user, $password, null, $dsn);
 
 // defined variables
 $message = '';
@@ -73,25 +72,19 @@ if(isset($_POST["register"]))  // if register is set then executes the code
 
     if($error_user_name == '' && $error_user_email == '' && $error_user_password == '')
     {
-        $user_activation_code = md5(rand()); // this will generate dynamic code
-
-        $user_otp = rand(100000, 999999); // generate number between the range
 
         $data = array(
             ':user_name'            =>  $user_name,
             ':user_email'           =>  $user_email,
             ':user_password'        =>  $user_password,
-            ':user_activation_code' =>  $user_activation_code,
-            ':user_status'          =>  'not verified',
-            ':user_otp'             =>  $user_otp
         );
 
         $query = "
-                INSERT INTO register_user
-                (user_name, user_email, user_password, user_activation_code, user_status, user_otp)
-                SELECT * FROM (SELECT :user_name, :user_email, :user_password, :user_activation_code, :user_status, :user_otp) AS tmp
+                INSERT INTO register_user_1
+                (user_name, user_email, user_password)
+                SELECT * FROM (SELECT :user_name, :user_email, :user_password) AS tmp
                 WHERE NOT EXISTS ( -- query will execute only if user email does not exist in register user table
-                    SELECT user_email FROM register_user WHERE user_email = :user_email   
+                    SELECT user_email FROM register_user_1 WHERE user_email = :user_email   
                 ) LIMIT 1
             ";
 
@@ -104,34 +97,7 @@ if(isset($_POST["register"]))  // if register is set then executes the code
             $message = '<label class="text-danger">Email Already Register</label>';
         }
         else {  // registration via phpmailer using auto gmail account.
-            require 'vendor/autoload.php';
-            $mail = new PHPMailer;
-            $mail->IsSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->Port = '587';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'kyakso96@gmail.com';
-            $mail->Password = 'xpletlcxycumdaef';
-            $mail->SMTPSecure = 'tls';
-            $mail->From = 'kyakso96@gmail.com';
-            $mail->FromName = "Cloud-Box";
-            $mail->AddAddress($user_email);
-            $mail->IsHTML(true);
-            $mail->Subject = 'Verification code for email address';
-
-            $message_body = '<p> To verify your email address, enter this verification code when prompted: 
-                            <b>'.$user_otp.'</b>.</p> <p>Sincerely,</p><p>Cloud-box.info</p>';
-
-            $mail->Body = $message_body;
-
-            if($mail->Send())
-            {
-                echo '<script>alert("PLease Check email for code.")</script>';
-                header('location:email_verify.php?code=' .$user_activation_code);
-            }
-            else {
-                $message = $mail->ErrorInfo;
-            }
+            $message = '<label class="text-danger">Register Success.</label>';
         }
     }
 }
