@@ -7,7 +7,7 @@
  $conn = mysqli_connect($inst, $user, $pass, $db); */
 
 
-/*
+
 $servername = "localhost";
 $username = "root";
 $password = "pass213";
@@ -20,9 +20,6 @@ try {
 } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
 }
-*/
-$user = getenv('CLOUDSQL_USER');
-$password = getenv('CLOUDSQL_PASSWORD');
-$dsn = getenv('CLOUDSQL_DSN');
-#$db = getenv('CLOUDSQL_DB');
-$connect = new PDO(null, $user, $password, null, $dsn);
+
+
+?>

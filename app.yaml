@@ -11,8 +11,6 @@ handlers:
   static_dir: css
 
 
-
-
 # Serve images as static resources.
 - url: /(.+\.(gif|png|jpg))$
   static_files: \1
@@ -24,6 +22,7 @@ entrypoint:
 env_variables:
 
   CLOUDSQL_USER: root
-  #CLOUDSQL_DB: userdetail
+  CLOUDSQL_DB: userdetail
   CLOUDSQL_PASSWORD: pass213
-  CLOUDSQL_HOST: mysql:dbname=userdetail;unix_socket=/cloudsql/bustling-walker-308215:europe-west2:cloud-box-2
+  CLOUDSQL_DSN: mysql:unix_socket=/cloudsql/bustling-walker-308215:europe-west2:cloud-box-2
+# [END gae_cloudsql_mysql_env]

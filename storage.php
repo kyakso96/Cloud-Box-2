@@ -6,8 +6,8 @@ class storage {
     private $projectId;
     private $storage;
         public function __construct() {  // main function to connect to our Cloud Project
-            putenv("GOOGLE_APPLICATION_CREDENTIALS=C:\\xampp\\htdocs\\Cloud-Box\\credentials\\useful-song-309021-9cc4a78dbab2.json");  // credential to connect to GCP service
-            $this->projectId = 'useful-song-309021';  // name of our project id
+            putenv("GOOGLE_APPLICATION_CREDENTIALS=C:\\xampp\\htdocs\\Cloud-Box-2\\credentials\\bustling-walker-308215-f4f9c37eaabf.json");  // credential to connect to GCP service
+            $this->projectId = 'bustling-walker-308215';  // name of our project id
             $this->storage = new StorageClient([
                 'projectId' => $this->projectId
             ]);
@@ -39,7 +39,7 @@ class storage {
     $storage = new StorageClient();
     $bucket = $storage->bucket($bucketName);
     foreach ($bucket->objects() as $object) {
-        printf('Object: %s' . PHP_EOL, $object->name());
+        printf("<table> <tr><th>File name</th></tr> <tr><td>'Files: %s'</td></tr> </table>" .  '<br>' . '<br>' . PHP_EOL, $object->name());
     }
 }
 }

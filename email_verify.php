@@ -1,5 +1,6 @@
 <?php
-/*$servername = "localhost";
+
+$servername = "localhost";
 $username = "root";
 $password = "pass213";
 
@@ -10,12 +11,7 @@ try {
     echo "Connected successfully";
 } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
-}*/
-    $dsn = getenv('CLOUDSQL_DSN');
-    $user = getenv('CLOUDSQL_USER');
-    $password = getenv('CLOUDSQL_PASSWORD');
-
-    $connect = new PDO($dsn, $user, $password);
+}
 
     $error_user_otp = '';
     $user_activation_code = '';

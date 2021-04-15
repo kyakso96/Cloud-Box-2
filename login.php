@@ -4,14 +4,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="http://code.jquery.com/jquery.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/Website.css">
 </head>
 <body>
+<header>
+    <div class="logo">
+        CLOUD-BOX
+    </div>
+    <nav>
+        <ul>
+            <li>
+                <a href="index.php">Home</a>
+            </li>
+            <li>
+                <a href="login.php">Sign In</a>
+            </li>
+            <li>
+                <a href="register.php">Sign Up</a>
+            </li>
+            <li>
+                <a href="#">Why Cloud-Box</a>
+            </li>
+        </ul>
+    </nav>
+
+</header>
 <br />
 <div class="container">
     <h3 align="center">Login</h3>
     <br />
 
     <?php
+    session_start();
+
     if(isset($_GET["register"]))
     {
         if($_GET["register"] == 'success')
@@ -22,7 +47,7 @@
         }
     }
 
-    /*$servername = "localhost";
+    $servername = "localhost";
     $username = "root";
     $password = "pass213";
 
@@ -32,12 +57,12 @@
         $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
-    }*/
-    $user = getenv('CLOUDSQL_USER');
-    $password = getenv('CLOUDSQL_PASSWORD');
-    $dsn = getenv('CLOUDSQL_DSN');
-    #$db = getenv('CLOUDSQL_DB');
-    $connect = new PDO(null, $user, $password, null, $dsn);
+    }
+
+    if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+        header("location: loggedin.php");
+        exit;
+    }
 
     // Define variables and initialize with empty values
     $user_email = $user_password = "";
@@ -63,7 +88,7 @@
         // Validate credentials
         if(empty($user_email_error) && empty($user_password_error)){
             // Prepare a select statement
-            $sql = "SELECT user_email, user_password FROM register_user_1 WHERE user_email = :user_email";
+            $sql = "SELECT user_email, user_password FROM register_user WHERE user_email = :user_email";
 
             if($statement = $connect->prepare($sql)){
                 // Bind variables to the prepared statement as parameters
@@ -88,7 +113,7 @@
                                 $_SESSION["username"] = $user_email;
 
                                 // Redirect user to welcome page
-                                header("location: index.php");
+                                header("location: loggedin.php");
                             } else{
                                 // Password is not valid, display a generic error message
                                 $login_error = "Invalid username or password.";
