@@ -38,8 +38,8 @@ if (!isset($_SESSION['loggedin'])) //Can't access page unless the user is logged
     </nav>
 
 </header>
-<br>
-<br>
+
+<br><br><br><br><br><br>
 <div class="container">
 <div class="panel panel-default">
     <div class="panel-heading">

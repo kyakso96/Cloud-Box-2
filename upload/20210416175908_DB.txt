@@ -1,0 +1,14 @@
+  $this->host = getenv('MYSQL_HOST');
+    $this->dbname = getenv('MYSQL_DB');
+    $this->user = getenv('MYSQL_USER');
+    $this->pass = getenv('MYSQL_PASS');
+    
+    
+    try {
+        $connect = new PDO($this->host. '; dbname=' . $this->dbname, $this->user, $this->pass);
+        $connect->setAttribute(PDO:: ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $connect;
+    }
+    catch(PDOException $e) {
+        echo 'Database Error:' . $e->getMessage();
+    }

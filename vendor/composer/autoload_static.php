@@ -14,6 +14,10 @@ class ComposerStaticInit4341e7858f853d3747311cdf5c0455c5
     );
 
     public static $prefixLengthsPsr4 = array (
+        'S' => 
+        array (
+            'Sonata\\GoogleAuthenticator\\' => 27,
+        ),
         'R' => 
         array (
             'Rize\\' => 5,
@@ -38,6 +42,7 @@ class ComposerStaticInit4341e7858f853d3747311cdf5c0455c5
             'Google\\Cloud\\Storage\\' => 21,
             'Google\\Cloud\\Core\\' => 18,
             'Google\\CRC32\\' => 13,
+            'Google\\Authenticator\\' => 21,
             'Google\\Auth\\' => 12,
         ),
         'F' => 
@@ -47,6 +52,10 @@ class ComposerStaticInit4341e7858f853d3747311cdf5c0455c5
     );
 
     public static $prefixDirsPsr4 = array (
+        'Sonata\\GoogleAuthenticator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sonata-project/google-authenticator/src',
+        ),
         'Rize\\' => 
         array (
             0 => __DIR__ . '/..' . '/rize/uri-template/src/Rize',
@@ -98,6 +107,10 @@ class ComposerStaticInit4341e7858f853d3747311cdf5c0455c5
         'Google\\CRC32\\' => 
         array (
             0 => __DIR__ . '/..' . '/google/crc32/src',
+        ),
+        'Google\\Authenticator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sonata-project/google-authenticator/src',
         ),
         'Google\\Auth\\' => 
         array (

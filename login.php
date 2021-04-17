@@ -1,40 +1,6 @@
-<html>
-<head>
-    <title> Login </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/Website.css">
-</head>
-<body>
-<header>
-    <div class="logo">
-        CLOUD-BOX
-    </div>
-    <nav>
-        <ul>
-            <li>
-                <a href="index.php">Home</a>
-            </li>
-            <li>
-                <a href="login.php">Sign In</a>
-            </li>
-            <li>
-                <a href="register.php">Sign Up</a>
-            </li>
-            <li>
-                <a href="#">Why Cloud-Box</a>
-            </li>
-        </ul>
-    </nav>
 
-</header>
-<br />
-<div class="container">
-    <h3 align="center">Login</h3>
-    <br />
+<?php
 
-    <?php
     session_start();
 
     if(isset($_GET["register"]))
@@ -47,22 +13,18 @@
         }
     }
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "pass213";
+$dsn = getenv('CLOUDSQL_DSN');
+$user = getenv('CLOUDSQL_USER');
+$pass = getenv('CLOUDSQL_PASSWORD');
+$dbname = getenv('CLOUDSQL_DB');
 
-    try {
-        $connect = new PDO("mysql:host=$servername;port=3307;dbname=userdetail", $username, $password);
-        // set the PDO error mode to exception
-        $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch(PDOException $e) {
-        echo "Connection failed: " . $e->getMessage();
-    }
-
-    if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-        header("location: loggedin.php");
-        exit;
-    }
+try {
+    $connect = new PDO($dsn . '; dbname=' . $dbname, $user, $pass);
+    $connect->setAttribute(PDO:: ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e) {
+    echo 'Database Error:' . $e->getMessage();
+}
 
     // Define variables and initialize with empty values
     $user_email = $user_password = "";
@@ -106,21 +68,23 @@
                             $hashed_password = $row["user_password"];
                             if(password_verify($user_password, $hashed_password)){
                                 // Password is correct, so start a new session
-                                session_start();
 
+
+                                session_start();
                                 // Store data in session variables
                                 $_SESSION["loggedin"] = true;
                                 $_SESSION["username"] = $user_email;
 
-                                // Redirect user to welcome page
-                                header("location: loggedin.php");
+                                // Redirect user to the google authenticator
+                                header("location: authenticator.php");
+
                             } else{
-                                // Password is not valid, display a generic error message
+                                // Password is not valid displays error message
                                 $login_error = "Invalid username or password.";
                             }
                         }
                     } else{
-                        // Username doesn't exist, display a generic error message
+                        // Username doesn't exist displays error message
                         $login_error = "Invalid username or password.";
                     }
                 } else{
@@ -136,13 +100,43 @@
         unset($pdo);
     }
     ?>
+<html>
+<head>
+    <title> Login </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="navbar">
+    <div class="logo">
+        CLOUD-BOX
+    </div>
+    <div class="nav-right">
+
+        <a href="index.php">Home</a>
+
+        <a href="login.php">Sign In</a>
+
+        <a href="register.php">Sign Up</a>
+
+        <a href="#">Why Cloud-Box</a>
+
+    </div>
+
+</div>
+<br />
+<br><br><br><br><br><br><br><br>
+<div style="opacity: 0.9;"  class="container">
+
 
     <div class="row">
         <div class="col-md-3">&nbsp;</div>
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Login</h3>
+                    <h3 class="panel-title" align="center">Login</h3>
                 </div>
                 <div class="panel-body">
                     <?php
@@ -165,7 +159,7 @@
                             <input type="hidden" name="action" id="action" value="email" />
                             <input type="submit" name="login" id="login" class="btn btn-primary" value="Login" />
                         </div>
-                        <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+                        <p>Don't have an account? <a style="color:black;" href="register.php">Sign up now</a>.</p>
                     </form>
                 </div>
             </div>

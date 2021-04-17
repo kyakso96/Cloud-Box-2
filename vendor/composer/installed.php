@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'f04e93f1496ca96f309ea3aa364575a02acd122d',
+    'reference' => 'a073967096c86caf3348f1a31a0b2fb35892b332',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'f04e93f1496ca96f309ea3aa364575a02acd122d',
+      'reference' => 'a073967096c86caf3348f1a31a0b2fb35892b332',
     ),
     'firebase/php-jwt' => 
     array (
@@ -184,6 +184,15 @@
       array (
       ),
       'reference' => '6e0b97e00e0f36c652dd3c37b194ef07de669b82',
+    ),
+    'sonata-project/google-authenticator' => 
+    array (
+      'pretty_version' => '2.3.1',
+      'version' => '2.3.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '71a4189228f93a9662574dc8c65e77ef55061b59',
     ),
   ),
 );

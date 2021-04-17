@@ -2,6 +2,7 @@
 require __DIR__ . '/vendor/autoload.php';
 use Google\Cloud\Storage\StorageClient;
 
+
 class storage {
     private $projectId;
     private $storage;
@@ -13,7 +14,6 @@ class storage {
             ]);
         }
 
-     
     function uploadPObject($bucketName, $objectName, $source)  //uploading objects
     {
         $storage = new StorageClient();
@@ -34,12 +34,42 @@ class storage {
         printf('Downloaded gs://%s/%s to %s' . PHP_EOL,
             $bucketName, $objectName, basename($destination));
     }
-    function list_objects($bucketName)
+    function list_objects($bucketName)  //list function inside our cloud bucket
 {
     $storage = new StorageClient();
     $bucket = $storage->bucket($bucketName);
     foreach ($bucket->objects() as $object) {
-        printf("<table> <tr><th>File name</th></tr> <tr><td>'Files: %s'</td></tr> </table>" .  '<br>' . '<br>' . PHP_EOL, $object->name());
+        printf("<table> 
+                <tr>
+                    <th>File name</th>
+                    <th>Link</th>
+                </tr>                
+                <tr>
+                    <td><a style='color: black;' href='' name='download'>%s</a></td>
+                    <td>Download</td>
+                </tr> 
+                </table>" .  '<br>' . '<br>' . PHP_EOL, $object->name());
     }
 }
+    function list_objects_download($bucketName, $objectName, $destination)
+    {
+        $storage = new StorageClient();
+        $bucket = $storage->bucket($bucketName);
+        $object = $bucket->object($objectName);
+        $object->downloadToFile($destination);
+        foreach ($bucket->objects() as $object) {
+            printf("<table> 
+                <tr>
+                    <th>File name</th>
+                    <th>Link</th>
+                </tr>                
+                <tr>
+                    <td><a href='#' name='download'>%s</a></td>
+                    <td>Download</td>
+                </tr> 
+                </table>" .  '<br>' . '<br>' . PHP_EOL, $object->name(), $objectName, basename($destination));
+        }
+    }
+
+
 }

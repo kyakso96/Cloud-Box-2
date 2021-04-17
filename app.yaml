@@ -1,25 +1,26 @@
 runtime: php74 # Replace with php74 to use PHP 7.4
 runtime_config:
-  document_root: Cloud-Box
+  document_root: Cloud-box
 
 handlers:
-- url: /.*
-  script: auto
-
-# Serve a directory as a static resource.
-- url: /css
-  static_dir: css
+  # Serve a directory as a static resource.
+  - url: /css
+    static_dir: css
 
 
-# Serve images as static resources.
-- url: /(.+\.(gif|png|jpg))$
-  static_files: \1
-  upload: .+\.(gif|png|jpg)$
+  # Serve images as static resources.
+  - url: /(.+\.(gif|png|jpg))$
+    static_files: \1
+    upload: .+\.(gif|png|jpg)$
 
-entrypoint: 
+  - url: /.*
+    script: auto
+
+entrypoint:
   serve handler.php
 
 env_variables:
+
 
   CLOUDSQL_USER: root
   CLOUDSQL_DB: userdetail

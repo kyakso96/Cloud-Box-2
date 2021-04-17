@@ -8,18 +8,17 @@
 
 
 
-$servername = "localhost";
-$username = "root";
-$password = "pass213";
+$dsn = getenv('CLOUDSQL_DSN');
+$user = getenv('CLOUDSQL_USER');
+$pass = getenv('CLOUDSQL_PASSWORD');
+$dbname = getenv('CLOUDSQL_DB');
 
 try {
-        $connect = new PDO("mysql:host=$servername;port=3307;dbname=userdetail", $username, $password);
-        // set the PDO error mode to exception
-        $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        echo "Connected successfully";
-} catch(PDOException $e) {
-        echo "Connection failed: " . $e->getMessage();
+    $connect = new PDO($dsn . '; dbname=' . $dbname, $user, $pass);
+    $connect->setAttribute(PDO:: ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
-
+catch(PDOException $e) {
+    echo 'Database Error:' . $e->getMessage();
+}
 
 ?>

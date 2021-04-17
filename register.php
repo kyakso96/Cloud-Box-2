@@ -24,17 +24,23 @@ $dsn = sprintf('mysql:dbname=%s;host=%s', $dbName, $dbHost);
 
 // Connect to the database
 $connect = new PDO($dsn, $username, $password, $connConfig); */
+session_start();
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: loggedin.php");
+    exit;
+}
 
-$servername = "localhost";
-$username = "root";
-$password = "pass213";
+$dsn = getenv('CLOUDSQL_DSN');
+$user = getenv('CLOUDSQL_USER');
+$pass = getenv('CLOUDSQL_PASSWORD');
+$dbname = getenv('CLOUDSQL_DB');
 
 try {
-    $connect = new PDO("mysql:host=$servername;port=3307;dbname=userdetail", $username, $password);
-    // set the PDO error mode to exception
-    $connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+    $connect = new PDO($dsn . '; dbname=' . $dbname, $user, $pass);
+    $connect->setAttribute(PDO:: ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e) {
+    echo 'Database Error:' . $e->getMessage();
 }
 
 // defined variables
@@ -124,7 +130,7 @@ if(isset($_POST["register"]))  // if register is set then executes the code
             $mail->IsHTML(true);
             $mail->Subject = 'Verification code for email address';
 
-            $message_body = '<p> To verify your email address, enter this verification code when prompted: 
+            $message_body = '<p> To verify your email address, enter this verification code when prompted: <!-- email with a message sent to the registered user-->
                                 <b>' . $user_otp . '</b>.</p> <p>Sincerely,</p><p>Cloud-box.info</p>';
 
             $mail->Body = $message_body;
@@ -146,38 +152,33 @@ if(isset($_POST["register"]))  // if register is set then executes the code
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="http://code.jquery.com/jquery.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/Website.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<header>
+<div class="navbar">
     <div class="logo">
         CLOUD-BOX
     </div>
-    <nav>
-        <ul>
-            <li>
-                <a href="index.php">Home</a>
-            </li>
-            <li>
-                <a href="login.php">Sign In</a>
-            </li>
-            <li>
-                <a href="register.php">Sign Up</a>
-            </li>
-            <li>
-                <a href="#">Why Cloud-Box</a>
-            </li>
-        </ul>
-    </nav>
+    <div class="nav-right">
 
-</header>
+                <a href="index.php">Home</a>
+
+                <a href="login.php">Sign In</a>
+
+                <a href="register.php">Sign Up</a>
+
+                <a href="#">Why Cloud-Box</a>
+
+    </div>
+
+</div>
 <br />
-<div class="container">
-    <h3 align="center">Register</h3>
+<br><br><br><br><br><br><br><br><br>
+<div class="container" style="opacity: 0.9;">
     <br />
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Registration</h3>
+            <h3 class="panel-title" align="center">Registration</h3>
         </div>
         <div class="panel-body">
             <?php
@@ -208,7 +209,7 @@ if(isset($_POST["register"]))  // if register is set then executes the code
                 <div class="form-group">
                     <input type="submit" name="register" class="btn btn-success" value="register" />
                 </div>
-                <p>Already have an account? <a href="login.php">Login now</a>.</p>
+                <p>Already have an account? <a style="color: black;" href="login.php">Login now</a></p>
             </form>
         </div>
     </div>
